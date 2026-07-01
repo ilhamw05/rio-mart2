@@ -327,6 +327,116 @@
             display: block;
         }
 
+        /* ===== CAROUSEL ===== */
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 190px;
+            overflow: hidden;
+            background: #f1f5f9;
+        }
+        .carousel img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            z-index: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .carousel img.active {
+            opacity: 1;
+            z-index: 1;
+        }
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(15, 23, 42, 0.4);
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+            transition: background 0.2s;
+        }
+        .carousel-btn:hover {
+            background: rgba(15, 23, 42, 0.8);
+        }
+        .carousel-btn.prev {
+            left: 8px;
+        }
+        .carousel-btn.next {
+            right: 8px;
+        }
+        .carousel-dots {
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+            z-index: 3;
+        }
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            transition: background 0.2s;
+        }
+        .carousel-dot.active {
+            background: white;
+            box-shadow: 0 0 4px rgba(0,0,0,0.3);
+        }
+        .variant-label {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            background: rgba(29, 78, 216, 0.85);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 999px;
+            z-index: 3;
+            white-space: nowrap;
+        }
+        .color-chips {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+        .color-chip {
+            padding: 4px 12px;
+            border-radius: 999px;
+            border: 2px solid var(--border);
+            background: white;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .color-chip:hover {
+            border-color: var(--primary);
+        }
+        .color-chip.selected {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
         .product-tag {
             position: absolute;
             top: 12px;
@@ -613,9 +723,40 @@
         }
 
         .cart-footer {
-            padding: 20px 24px;
+            padding: 16px 24px;
             border-top: 1px solid var(--border);
         }
+
+        .cart-address {
+            margin-bottom: 12px;
+        }
+        .cart-address label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--text);
+        }
+        .cart-address input,
+        .cart-address textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 0.88rem;
+        }
+        .cart-address textarea {
+            resize: vertical;
+            min-height: 60px;
+            max-height: 120px;
+        }
+        .cart-address input:focus,
+        .cart-address textarea:focus {
+            outline: 2px solid var(--primary);
+            border-color: transparent;
+        }
+
 
         .cart-total-row {
             display: flex;
@@ -781,6 +922,12 @@
         </div>
         <div class="cart-items" id="cartItems"></div>
         <div class="cart-footer">
+            <div class="cart-address">
+                <label><i class="fas fa-user"></i> Nama Penerima</label>
+                <input type="text" id="cartName" placeholder="Masukkan nama penerima..." style="margin-bottom: 12px;">
+                <label><i class="fas fa-map-marker-alt"></i> Alamat Pengiriman</label>
+                <textarea id="cartAddress" placeholder="Masukkan alamat lengkap pengiriman..."></textarea>
+            </div>
             <div class="cart-total-row">
                 <span>Total</span>
                 <span id="cartTotal">Rp 0</span>
@@ -795,19 +942,59 @@
         const WA_NUMBER = "6288233190113"; // nomor WhatsApp toko RIO MART
 
         const products = [
-            { id: 1, name: "Bolpoin Standard", price: 2500, unit: "pcs", category: "Alat Tulis", img: "images/image.png" },
+            { id: 1, name: "Bolpoin", price: 5000, unit: "pcs", category: "Alat Tulis", img: "images/apel new jell.png",
+              variants: [
+                { name: "Apel New Jell", price: 5000, img: "images/apel new jell.png" },
+                { name: "Faster F-3", price: 4000, img: "images/faster f3.png" },
+                { name: "Kenko", price: 6000, img: "images/gel kenko.png" },
+                { name: "Standard", price: 2500, img: "images/standar .png", colors: ["Hitam", "Biru", "Merah"] },
+                { name: "Lilin Quantum", price: 3500, img: "images/lilin quantum .png" }
+              ]
+            },
             { id: 2, name: "Pensil 2B", price: 18000, unit: "pack (12 pcs)", category: "Alat Tulis", img: "images/image copy.png" },
             { id: 3, name: "Buku Tulis", price: 12000, unit: "pcs", category: "Kertas & Buku", img: "images/image copy 2.png" },
             { id: 4, name: "Kertas Origami", price: 15000, unit: "pack", category: "Kertas & Buku", img: "images/image copy 3.png" },
             { id: 5, name: "Penghapus", price: 2000, unit: "pcs", category: "Alat Tulis", img: "images/image copy 4.png" },
             { id: 6, name: "Tipe-X", price: 4000, unit: "pcs", category: "Alat Tulis", img: "images/image copy 5.png" },
             { id: 7, name: "Kertas Karton", price: 8000, unit: "lembar", category: "Kertas & Buku", img: "images/image copy 6.png" },
-            { id: 8, name: "Spidol Warna", price: 25000, unit: "set (12 warna)", category: "Alat Tulis", img: "images/image copy 7.png" }
+            { id: 8, name: "Spidol Warna", price: 25000, unit: "set (12 warna)", category: "Alat Tulis", img: "images/image copy 7.png" },
+            { id: 9, name: "Buku Kwarto", price: 10000, unit: "pcs", category: "Kertas & Buku", img: "images/buku_kwarto.jpg" },
+            { id: 10, name: "Tipex Kertas", price: 6000, unit: "pcs", category: "Alat Tulis", img: "images/tipex_kertas.png" },
+            { id: 11, name: "Penggaris", price: 3000, unit: "pcs", category: "Alat Tulis", img: "images/penggaris.png" },
+            { id: 12, name: "Print Pre-Order", price: 800, priceRange: true, priceMin: 800, priceMax: 2000, unit: "lembar", category: "Jasa", img: "images/print_preorder.png", tag: "Pre-Order" }
         ];
 
         const categories = ["Semua", ...new Set(products.map(p => p.category))];
         let activeCategory = "Semua";
-        let cart = {}; // { productId: qty }
+        // Cart keys: "id" for normal, "id-vi" for variant, "id-vi-color" for variant+color
+        let cart = {};
+        let carouselIndex = {};
+        let selectedColors = {};
+
+        function makeCartKey(product) {
+            if (!product.variants) return String(product.id);
+            const vi = carouselIndex[product.id] || 0;
+            const v = product.variants[vi];
+            if (v.colors && v.colors.length > 0) {
+                const color = selectedColors[product.id] || v.colors[0];
+                return `${product.id}-${vi}-${color}`;
+            }
+            return `${product.id}-${vi}`;
+        }
+
+        function parseCartKey(key) {
+            const parts = key.split("-");
+            const productId = Number(parts[0]);
+            const product = products.find(p => p.id === productId);
+            if (!product) return null;
+            if (parts.length >= 2) {
+                const vi = Number(parts[1]);
+                const variant = product.variants ? product.variants[vi] : null;
+                const color = parts.length >= 3 ? parts.slice(2).join("-") : null;
+                return { product, variant, variantIndex: vi, color };
+            }
+            return { product, variant: null, variantIndex: null, color: null };
+        }
 
         function formatRupiah(n) {
             return "Rp " + n.toLocaleString("id-ID");
@@ -832,7 +1019,10 @@
 
             const filtered = products.filter(p => {
                 const matchCategory = activeCategory === "Semua" || p.category === activeCategory;
-                const matchSearch = p.name.toLowerCase().includes(query);
+                let matchSearch = p.name.toLowerCase().includes(query);
+                if (!matchSearch && p.variants) {
+                    matchSearch = p.variants.some(v => v.name.toLowerCase().includes(query));
+                }
                 return matchCategory && matchSearch;
             });
 
@@ -842,57 +1032,141 @@
             }
 
             grid.innerHTML = filtered.map(p => {
-                const qty = cart[p.id] || 0;
+                const tagLabel = p.tag || p.category;
+
+                // --- Variant-based product ---
+                if (p.variants && p.variants.length > 0) {
+                    if (typeof carouselIndex[p.id] === 'undefined') carouselIndex[p.id] = 0;
+                    const vi = carouselIndex[p.id];
+                    const v = p.variants[vi];
+                    const priceDisplay = `${formatRupiah(v.price)} / ${p.unit}`;
+                    const qty = cart[makeCartKey(p)] || 0;
+
+                    const dotsHTML = p.variants.map((_, i) =>
+                        `<button class="carousel-dot ${i === vi ? 'active' : ''}" onclick="goToSlide(${p.id}, ${i})"></button>`
+                    ).join('');
+
+                    let colorHTML = '';
+                    if (v.colors && v.colors.length > 0) {
+                        const sel = selectedColors[p.id] || v.colors[0];
+                        if (!selectedColors[p.id]) selectedColors[p.id] = v.colors[0];
+                        colorHTML = `<div class="color-chips">${v.colors.map(c =>
+                            `<button class="color-chip ${c === sel ? 'selected' : ''}" onclick="selectColor(${p.id}, '${c}')">${c}</button>`
+                        ).join('')}</div>`;
+                    } else {
+                        delete selectedColors[p.id];
+                    }
+
+                    return `
+        <div class="product-card">
+          <div class="img-wrap">
+            <div class="carousel" id="carousel-${p.id}">
+              ${p.variants.map((vr, i) => `<img src="${vr.img}" class="${i === vi ? 'active' : ''}" alt="Bolpoin ${vr.name}">`).join('')}
+              <button class="carousel-btn prev" onclick="prevSlide(${p.id})"><i class="fas fa-chevron-left"></i></button>
+              <button class="carousel-btn next" onclick="nextSlide(${p.id})"><i class="fas fa-chevron-right"></i></button>
+              <div class="carousel-dots">${dotsHTML}</div>
+              <span class="variant-label">${vi + 1} / ${p.variants.length}</span>
+            </div>
+            <span class="product-tag">${tagLabel}</span>
+          </div>
+          <div class="product-info">
+            <h3>Bolpoin ${v.name}</h3>
+            <p class="price">${priceDisplay}</p>
+            ${colorHTML}
+            <div class="qty-row">
+              <div class="qty-control">
+                <button onclick="changeQty('${makeCartKey(p)}', -1)">-</button>
+                <span>${qty}</span>
+                <button onclick="changeQty('${makeCartKey(p)}', 1)">+</button>
+              </div>
+              <button class="btn-add" onclick="addToCart('${makeCartKey(p)}')">Tambah</button>
+            </div>
+          </div>
+        </div>`;
+                }
+
+                // --- Normal product ---
+                const cartKey = String(p.id);
+                const qty = cart[cartKey] || 0;
+                const priceDisplay = p.priceRange
+                    ? `${formatRupiah(p.priceMin)} - ${formatRupiah(p.priceMax)} / ${p.unit}`
+                    : `${formatRupiah(p.price)} / ${p.unit}`;
+
                 return `
         <div class="product-card">
           <div class="img-wrap">
             <img src="${p.img}" alt="${p.name}">
-            <span class="product-tag">${p.category}</span>
+            <span class="product-tag">${tagLabel}</span>
           </div>
           <div class="product-info">
             <h3>${p.name}</h3>
-            <p class="price">${formatRupiah(p.price)} / ${p.unit}</p>
+            <p class="price">${priceDisplay}</p>
             <div class="qty-row">
               <div class="qty-control">
-                <button onclick="changeQty(${p.id}, -1)">-</button>
+                <button onclick="changeQty('${cartKey}', -1)">-</button>
                 <span>${qty}</span>
-                <button onclick="changeQty(${p.id}, 1)">+</button>
+                <button onclick="changeQty('${cartKey}', 1)">+</button>
               </div>
-              <button class="btn-add" onclick="addToCart(${p.id})">Tambah</button>
+              <button class="btn-add" onclick="addToCart('${cartKey}')">Tambah</button>
             </div>
           </div>
         </div>`;
             }).join("");
         }
 
-        function changeQty(id, delta) {
-            const current = cart[id] || 0;
+        function prevSlide(id) {
+            const p = products.find(x => x.id === id);
+            if (!p || !p.variants) return;
+            carouselIndex[id] = (carouselIndex[id] - 1 + p.variants.length) % p.variants.length;
+            renderProducts();
+        }
+
+        function nextSlide(id) {
+            const p = products.find(x => x.id === id);
+            if (!p || !p.variants) return;
+            carouselIndex[id] = (carouselIndex[id] + 1) % p.variants.length;
+            renderProducts();
+        }
+
+        function goToSlide(id, idx) {
+            carouselIndex[id] = idx;
+            renderProducts();
+        }
+
+        function selectColor(id, color) {
+            selectedColors[id] = color;
+            renderProducts();
+        }
+
+        function changeQty(cartKey, delta) {
+            const current = cart[cartKey] || 0;
             const next = Math.max(0, current + delta);
-            if (next === 0) delete cart[id];
-            else cart[id] = next;
+            if (next === 0) delete cart[cartKey];
+            else cart[cartKey] = next;
             renderProducts();
             renderCart();
         }
 
-        function addToCart(id) {
-            if (!cart[id]) cart[id] = 0;
-            cart[id] += 1;
+        function addToCart(cartKey) {
+            if (!cart[cartKey]) cart[cartKey] = 0;
+            cart[cartKey] += 1;
             renderProducts();
             renderCart();
             toggleCart(true);
         }
 
-        function removeFromCart(id) {
-            delete cart[id];
+        function removeFromCart(cartKey) {
+            delete cart[cartKey];
             renderProducts();
             renderCart();
         }
 
         function getCartEntries() {
-            return Object.entries(cart).map(([id, qty]) => {
-                const product = products.find(p => p.id === Number(id));
-                return { product, qty };
-            }).filter(entry => entry.product);
+            return Object.entries(cart).map(([key, qty]) => {
+                const parsed = parseCartKey(key);
+                if (!parsed) return null;
+                return { key, qty, ...parsed };
+            }).filter(e => e !== null);
         }
 
         function renderCart() {
@@ -902,7 +1176,11 @@
 
             let total = 0;
             let count = 0;
-            entries.forEach(e => { total += e.product.price * e.qty; count += e.qty; });
+            entries.forEach(e => {
+                const price = e.variant ? e.variant.price : e.product.price;
+                total += price * e.qty;
+                count += e.qty;
+            });
 
             document.getElementById("cartCount").textContent = count;
             document.getElementById("cartTotal").textContent = formatRupiah(total);
@@ -913,21 +1191,27 @@
                 return;
             }
 
-            container.innerHTML = entries.map(({ product, qty }) => `
+            container.innerHTML = entries.map(e => {
+                const displayName = e.variant ? `Bolpoin ${e.variant.name}` : e.product.name;
+                const displayPrice = e.variant ? e.variant.price : e.product.price;
+                const displayImg = e.variant ? e.variant.img : e.product.img;
+                const colorInfo = e.color ? ` (${e.color})` : '';
+                const safeKey = e.key.replace(/'/g, "\\'");
+                return `
       <div class="cart-item">
-        <img src="${product.img}" alt="${product.name}">
+        <img src="${displayImg}" alt="${displayName}">
         <div class="cart-item-info">
-          <h4>${product.name}</h4>
-          <p class="price">${formatRupiah(product.price)} x ${qty} = ${formatRupiah(product.price * qty)}</p>
+          <h4>${displayName}${colorInfo}</h4>
+          <p class="price">${formatRupiah(displayPrice)} x ${e.qty} = ${formatRupiah(displayPrice * e.qty)}</p>
           <div class="qty-control">
-            <button onclick="changeQty(${product.id}, -1)">-</button>
-            <span>${qty}</span>
-            <button onclick="changeQty(${product.id}, 1)">+</button>
+            <button onclick="changeQty('${safeKey}', -1)">-</button>
+            <span>${e.qty}</span>
+            <button onclick="changeQty('${safeKey}', 1)">+</button>
           </div>
         </div>
-        <button class="cart-item-remove" onclick="removeFromCart(${product.id})">Hapus</button>
-      </div>
-    `).join("");
+        <button class="cart-item-remove" onclick="removeFromCart('${safeKey}')">Hapus</button>
+      </div>`;
+            }).join("");
         }
 
         function toggleCart(open) {
@@ -939,14 +1223,34 @@
             const entries = getCartEntries();
             if (entries.length === 0) return;
 
+            const nama = document.getElementById('cartName').value.trim();
+            const alamat = document.getElementById('cartAddress').value.trim();
+
             let message = "Halo RIO MART, saya mau pesan:%0A";
             let total = 0;
-            entries.forEach(({ product, qty }) => {
-                const subtotal = product.price * qty;
+            let hasPriceRange = false;
+            entries.forEach(e => {
+                const displayName = e.variant ? `Bolpoin ${e.variant.name}` : e.product.name;
+                const price = e.variant ? e.variant.price : e.product.price;
+                const colorInfo = e.color ? ` (Warna: ${e.color})` : '';
+                const subtotal = price * e.qty;
                 total += subtotal;
-                message += `- ${product.name} x${qty} = ${formatRupiah(subtotal)}%0A`;
+                if (e.product.priceRange) {
+                    hasPriceRange = true;
+                    message += `- ${displayName}${colorInfo} x${e.qty} ${e.product.unit} (${formatRupiah(e.product.priceMin)} - ${formatRupiah(e.product.priceMax)}/${e.product.unit})%0A`;
+                } else {
+                    message += `- ${displayName}${colorInfo} x${e.qty} = ${formatRupiah(subtotal)}%0A`;
+                }
             });
-            message += `%0ATotal: ${formatRupiah(total)}`;
+            message += `%0AEstimasi Total: ${formatRupiah(total)}`;
+            if (hasPriceRange) {
+                message += `%0A*Harga print menyesuaikan jenis cetak.`;
+            }
+            if (nama || alamat) {
+                message += `%0A%0AData Pengiriman:`;
+                if (nama) message += `%0ANama: ${encodeURIComponent(nama)}`;
+                if (alamat) message += `%0AAlamat: ${encodeURIComponent(alamat)}`;
+            }
 
             window.open(`https://wa.me/${WA_NUMBER}?text=${message}`, "_blank");
         }
