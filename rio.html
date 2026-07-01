@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RIO MART - Marketplace Alat Tulis Sekolah & Kantor</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1d4ed8;
+            --primary-dark: #1e3a8a;
+            --accent: #f59e0b;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #64748b;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(29, 78, 216, 0.95);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
+        }
+
+        nav {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0.9rem 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo {
+            color: white;
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .logo span {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex: 1;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: white;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: color 0.25s ease;
+        }
+
+        .nav-links a:hover {
+            color: #fbbf24;
+        }
+
+        .cart-btn {
+            position: relative;
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: white;
+            padding: 0.6rem 1rem;
+            border-radius: 999px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s ease;
+        }
+
+        .cart-btn:hover {
+            background: rgba(255, 255, 255, 0.28);
+        }
+
+        .cart-count {
+            background: var(--accent);
+            color: #0f172a;
+            font-size: 0.75rem;
+            font-weight: 800;
+            min-width: 20px;
+            height: 20px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 5px;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(180deg, rgba(29, 78, 216, 0.86), rgba(29, 78, 216, 0.86)),
+                url('https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+            min-height: 78vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 130px 24px 60px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero .content {
+            max-width: 780px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.2rem, 4vw, 3.6rem);
+            line-height: 1.1;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            max-width: 640px;
+            margin: 0 auto 2rem;
+            opacity: 0.95;
+        }
+
+        .hero .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--accent);
+            color: #0f172a;
+            padding: 1rem 2rem;
+            border-radius: 999px;
+            font-weight: 700;
+            box-shadow: 0 14px 30px rgba(244, 149, 24, 0.25);
+            transition: transform 0.25s ease;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .hero .btn-primary:hover {
+            transform: translateY(-3px);
+        }
+
+        .floating-icon {
+            position: absolute;
+            font-size: 2.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            animation: float 8s infinite ease-in-out;
+            opacity: 0.7;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-25px) rotate(8deg);
+            }
+        }
+
+        section {
+            padding: 80px 24px;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: clamp(1.8rem, 2.4vw, 2.5rem);
+            color: var(--primary);
+            margin-bottom: 0.6rem;
+        }
+
+        .section-sub {
+            text-align: center;
+            color: var(--muted);
+            max-width: 560px;
+            margin: 0 auto 2.5rem;
+        }
+
+        /* ===== SHOP TOOLBAR ===== */
+        .shop-toolbar {
+            max-width: 1200px;
+            margin: 0 auto 32px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 220px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.85rem 1rem 0.85rem 2.6rem;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            font-size: 0.95rem;
+            background: white;
+            box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
+        }
+
+        .search-box input:focus {
+            outline: 2px solid var(--primary);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--muted);
+        }
+
+        .category-chips {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            border: 1px solid var(--border);
+            background: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text);
+            transition: all 0.2s ease;
+        }
+
+        .chip:hover {
+            border-color: var(--primary);
+        }
+
+        .chip.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--muted);
+            padding: 40px;
+            grid-column: 1 / -1;
+        }
+
+        /* ===== PRODUCTS ===== */
+        .products {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 22px 45px rgba(15, 23, 42, 0.13);
+        }
+
+        .product-card .img-wrap {
+            position: relative;
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 190px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .product-tag {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(15, 23, 42, 0.75);
+            color: white;
+            font-size: 0.72rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 999px;
+        }
+
+        .product-info {
+            padding: 20px;
+            text-align: left;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-info h3 {
+            margin-bottom: 0.3rem;
+            font-size: 1.05rem;
+            color: var(--text);
+        }
+
+        .price {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .qty-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: auto;
+        }
+
+        .qty-control {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            overflow: hidden;
+        }
+
+        .qty-control button {
+            background: var(--bg);
+            border: none;
+            width: 32px;
+            height: 32px;
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--primary);
+        }
+
+        .qty-control button:hover {
+            background: #e2e8f0;
+        }
+
+        .qty-control span {
+            width: 30px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .btn-add {
+            background: var(--accent);
+            color: #0f172a;
+            border: none;
+            padding: 0.6rem 1.1rem;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+        }
+
+        /* ===== WHY US ===== */
+        .why-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        }
+
+        .why-card {
+            background: white;
+            border-radius: 20px;
+            padding: 28px 24px;
+            text-align: center;
+            box-shadow: 0 14px 36px rgba(15, 23, 42, 0.07);
+        }
+
+        .why-card i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 14px;
+        }
+
+        .why-card h3 {
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+        }
+
+        .why-card p {
+            color: var(--muted);
+            font-size: 0.92rem;
+        }
+
+        /* ===== ABOUT ===== */
+        .about-wrap {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 24px;
+            padding: 36px;
+            box-shadow: 0 14px 36px rgba(15, 23, 42, 0.07);
+            text-align: center;
+        }
+
+        .about-wrap p {
+            color: #334155;
+            margin-bottom: 1rem;
+        }
+
+        /* ===== CONTACT ===== */
+        .contact-card {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            border-radius: 28px;
+            padding: 36px 28px;
+            text-align: center;
+        }
+
+        .contact-card p {
+            margin-bottom: 1.4rem;
+            color: rgba(255, 255, 255, 0.92);
+        }
+
+        .btn-contact {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: #25d366;
+            color: #0f172a;
+            padding: 1rem 2rem;
+            border-radius: 999px;
+            font-weight: 700;
+            transition: transform 0.25s ease;
+        }
+
+        .btn-contact:hover {
+            transform: translateY(-3px);
+        }
+
+        footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            text-align: center;
+            padding: 32px 24px;
+            font-size: 0.9rem;
+        }
+
+        /* ===== CART DRAWER ===== */
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.5);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1998;
+        }
+
+        .overlay.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 400px;
+            max-width: 92vw;
+            background: white;
+            z-index: 1999;
+            box-shadow: -20px 0 50px rgba(15, 23, 42, 0.25);
+            transform: translateX(100%);
+            transition: transform 0.35s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-drawer.open {
+            transform: translateX(0);
+        }
+
+        .cart-header {
+            padding: 22px 24px;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .cart-header h3 {
+            font-size: 1.2rem;
+        }
+
+        .cart-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.3rem;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 20px;
+        }
+
+        .cart-empty {
+            text-align: center;
+            color: var(--muted);
+            padding: 60px 20px;
+        }
+
+        .cart-empty i {
+            font-size: 2.4rem;
+            margin-bottom: 12px;
+            color: var(--border);
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cart-item img {
+            width: 64px;
+            height: 64px;
+            border-radius: 12px;
+            object-fit: cover;
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-info h4 {
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+        }
+
+        .cart-item-info .price {
+            font-size: 0.9rem;
+            margin-bottom: 6px;
+        }
+
+        .cart-item-remove {
+            color: #ef4444;
+            font-size: 0.8rem;
+            font-weight: 700;
+            background: none;
+            border: none;
+        }
+
+        .cart-footer {
+            padding: 20px 24px;
+            border-top: 1px solid var(--border);
+        }
+
+        .cart-total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .cart-total-row span:last-child {
+            color: var(--primary);
+        }
+
+        .btn-checkout {
+            width: 100%;
+            background: #25d366;
+            color: #0f172a;
+            border: none;
+            padding: 1rem;
+            border-radius: 999px;
+            font-weight: 800;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-checkout:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-checkout:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        @media (max-width: 860px) {
+            .nav-links {
+                display: none;
+            }
+
+            section {
+                padding: 60px 18px;
+            }
+
+            .hero {
+                padding: 120px 18px 60px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <div class="logo">RIO <span>MART</span></div>
+            <div class="nav-links">
+                <a href="#produk">Produk</a>
+                <a href="#tentang">Tentang</a>
+                <a href="#kontak">Kontak</a>
+            </div>
+            <button class="cart-btn" onclick="toggleCart(true)">
+                <i class="fas fa-shopping-cart"></i>
+                Keranjang
+                <span class="cart-count" id="cartCount">0</span>
+            </button>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="floating-icon" style="top:16%; left:10%; animation-delay:0s;">📚</div>
+        <div class="floating-icon" style="top:34%; left:18%; animation-delay:2s;">✏️</div>
+        <div class="floating-icon" style="top:24%; right:16%; animation-delay:1s;">🖍️</div>
+        <div class="floating-icon" style="bottom:28%; left:18%; animation-delay:3s;">📝</div>
+        <div class="floating-icon" style="bottom:24%; right:18%; animation-delay:4s;">📐</div>
+
+        <div class="content">
+            <h1>Belanja Alat Tulis Sekolah & Kantor, Praktis dari HP</h1>
+            <p>Pilih produk, masukkan ke keranjang, dan checkout langsung lewat WhatsApp. RIO MART menyediakan alat
+                tulis berkualitas dengan harga bersahabat.</p>
+            <a href="#produk" class="btn-primary"><i class="fas fa-shopping-bag"></i> Mulai Belanja</a>
+        </div>
+    </section>
+
+    <section id="produk">
+        <h2>Produk Kami</h2>
+        <p class="section-sub">Cari produk atau pilih kategori untuk menemukan alat tulis yang kamu butuhkan.</p>
+
+        <div class="shop-toolbar">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Cari produk, misal: pensil, buku..."
+                    oninput="renderProducts()">
+            </div>
+            <div class="category-chips" id="categoryChips"></div>
+        </div>
+
+        <div class="products" id="productGrid"></div>
+    </section>
+
+    <section style="background:#eff6ff;">
+        <h2>Kenapa Belanja di RIO MART</h2>
+        <p class="section-sub">Toko alat tulis online yang mudah, cepat, dan bisa diandalkan.</p>
+        <div class="why-grid">
+            <div class="why-card">
+                <i class="fas fa-tags"></i>
+                <h3>Harga Terjangkau</h3>
+                <p>Produk berkualitas dengan harga bersaing untuk pelajar, mahasiswa, dan pekerja kantor.</p>
+            </div>
+            <div class="why-card">
+                <i class="fab fa-whatsapp"></i>
+                <h3>Pesan Lewat WhatsApp</h3>
+                <p>Checkout instan, tinggal kirim keranjang belanja dan admin balas cepat.</p>
+            </div>
+            <div class="why-card">
+                <i class="fas fa-box-open"></i>
+                <h3>Stok Selalu Update</h3>
+                <p>Produk populer kami jaga ketersediaannya agar pesanan tidak tertunda.</p>
+            </div>
+            <div class="why-card">
+                <i class="fas fa-truck"></i>
+                <h3>Pengiriman Cepat</h3>
+                <p>Melayani wilayah Surakarta dan sekitarnya, juga lewat Shopee, Tokopedia, TikTok Shop.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="tentang">
+        <h2>Tentang RIO MART</h2>
+        <div class="about-wrap">
+            <p>RIO MART adalah toko online alat tulis sekolah dan kantor yang hadir untuk memudahkan pelajar, mahasiswa,
+                dan pekerja kantor mendapatkan kebutuhan alat tulis dengan cepat dan harga terjangkau.</p>
+            <p>Kami melayani pemesanan langsung lewat website ini maupun marketplace seperti Shopee, Tokopedia, dan
+                TikTok Shop, dengan proses checkout yang simpel lewat WhatsApp.</p>
+        </div>
+    </section>
+
+    <section id="kontak" style="background: linear-gradient(180deg, #1d4ed8, #1e40af); color: white;">
+        <h2>Hubungi Kami</h2>
+        <div class="contact-card">
+            <p>Ada pertanyaan seputar produk atau pesanan? Chat kami langsung lewat WhatsApp.</p>
+            <a href="https://wa.me/6288233190113" target="_blank" class="btn-contact"><i class="fab fa-whatsapp"></i>
+                WhatsApp RIO MART</a>
+            <p style="margin-top:1rem;">Surakarta, Jawa Tengah &middot; Marketplace: Shopee, Tokopedia, TikTok Shop</p>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 RIO MART - Marketplace Alat Tulis Sekolah dan Kantor</p>
+    </footer>
+
+    <!-- Cart Drawer -->
+    <div class="overlay" id="overlay" onclick="toggleCart(false)"></div>
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-cart"></i> Keranjang Belanja</h3>
+            <button class="cart-close" onclick="toggleCart(false)"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="cart-items" id="cartItems"></div>
+        <div class="cart-footer">
+            <div class="cart-total-row">
+                <span>Total</span>
+                <span id="cartTotal">Rp 0</span>
+            </div>
+            <button class="btn-checkout" id="checkoutBtn" onclick="checkout()">
+                <i class="fab fa-whatsapp"></i> Checkout via WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const WA_NUMBER = "6288233190113"; // nomor WhatsApp toko RIO MART
+
+        const products = [
+            { id: 1, name: "Bolpoin Standard", price: 2500, unit: "pcs", category: "Alat Tulis", img: "images/image.png" },
+            { id: 2, name: "Pensil 2B", price: 18000, unit: "pack (12 pcs)", category: "Alat Tulis", img: "images/image copy.png" },
+            { id: 3, name: "Buku Tulis", price: 12000, unit: "pcs", category: "Kertas & Buku", img: "images/image copy 2.png" },
+            { id: 4, name: "Kertas Origami", price: 15000, unit: "pack", category: "Kertas & Buku", img: "images/image copy 3.png" },
+            { id: 5, name: "Penghapus", price: 2000, unit: "pcs", category: "Alat Tulis", img: "images/image copy 4.png" },
+            { id: 6, name: "Tipe-X", price: 4000, unit: "pcs", category: "Alat Tulis", img: "images/image copy 5.png" },
+            { id: 7, name: "Kertas Karton", price: 8000, unit: "lembar", category: "Kertas & Buku", img: "images/image copy 6.png" },
+            { id: 8, name: "Spidol Warna", price: 25000, unit: "set (12 warna)", category: "Alat Tulis", img: "images/image copy 7.png" }
+        ];
+
+        const categories = ["Semua", ...new Set(products.map(p => p.category))];
+        let activeCategory = "Semua";
+        let cart = {}; // { productId: qty }
+
+        function formatRupiah(n) {
+            return "Rp " + n.toLocaleString("id-ID");
+        }
+
+        function renderCategoryChips() {
+            const wrap = document.getElementById("categoryChips");
+            wrap.innerHTML = categories.map(c =>
+                `<button class="chip ${c === activeCategory ? "active" : ""}" onclick="setCategory('${c}')">${c}</button>`
+            ).join("");
+        }
+
+        function setCategory(c) {
+            activeCategory = c;
+            renderCategoryChips();
+            renderProducts();
+        }
+
+        function renderProducts() {
+            const query = document.getElementById("searchInput").value.trim().toLowerCase();
+            const grid = document.getElementById("productGrid");
+
+            const filtered = products.filter(p => {
+                const matchCategory = activeCategory === "Semua" || p.category === activeCategory;
+                const matchSearch = p.name.toLowerCase().includes(query);
+                return matchCategory && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div class="empty-state"><i class="fas fa-box-open" style="font-size:2rem; margin-bottom:10px; display:block;"></i>Produk tidak ditemukan.</div>`;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(p => {
+                const qty = cart[p.id] || 0;
+                return `
+        <div class="product-card">
+          <div class="img-wrap">
+            <img src="${p.img}" alt="${p.name}">
+            <span class="product-tag">${p.category}</span>
+          </div>
+          <div class="product-info">
+            <h3>${p.name}</h3>
+            <p class="price">${formatRupiah(p.price)} / ${p.unit}</p>
+            <div class="qty-row">
+              <div class="qty-control">
+                <button onclick="changeQty(${p.id}, -1)">-</button>
+                <span>${qty}</span>
+                <button onclick="changeQty(${p.id}, 1)">+</button>
+              </div>
+              <button class="btn-add" onclick="addToCart(${p.id})">Tambah</button>
+            </div>
+          </div>
+        </div>`;
+            }).join("");
+        }
+
+        function changeQty(id, delta) {
+            const current = cart[id] || 0;
+            const next = Math.max(0, current + delta);
+            if (next === 0) delete cart[id];
+            else cart[id] = next;
+            renderProducts();
+            renderCart();
+        }
+
+        function addToCart(id) {
+            if (!cart[id]) cart[id] = 0;
+            cart[id] += 1;
+            renderProducts();
+            renderCart();
+            toggleCart(true);
+        }
+
+        function removeFromCart(id) {
+            delete cart[id];
+            renderProducts();
+            renderCart();
+        }
+
+        function getCartEntries() {
+            return Object.entries(cart).map(([id, qty]) => {
+                const product = products.find(p => p.id === Number(id));
+                return { product, qty };
+            }).filter(entry => entry.product);
+        }
+
+        function renderCart() {
+            const container = document.getElementById("cartItems");
+            const entries = getCartEntries();
+            const checkoutBtn = document.getElementById("checkoutBtn");
+
+            let total = 0;
+            let count = 0;
+            entries.forEach(e => { total += e.product.price * e.qty; count += e.qty; });
+
+            document.getElementById("cartCount").textContent = count;
+            document.getElementById("cartTotal").textContent = formatRupiah(total);
+            checkoutBtn.disabled = entries.length === 0;
+
+            if (entries.length === 0) {
+                container.innerHTML = `<div class="cart-empty"><i class="fas fa-shopping-cart"></i><p>Keranjang masih kosong.</p></div>`;
+                return;
+            }
+
+            container.innerHTML = entries.map(({ product, qty }) => `
+      <div class="cart-item">
+        <img src="${product.img}" alt="${product.name}">
+        <div class="cart-item-info">
+          <h4>${product.name}</h4>
+          <p class="price">${formatRupiah(product.price)} x ${qty} = ${formatRupiah(product.price * qty)}</p>
+          <div class="qty-control">
+            <button onclick="changeQty(${product.id}, -1)">-</button>
+            <span>${qty}</span>
+            <button onclick="changeQty(${product.id}, 1)">+</button>
+          </div>
+        </div>
+        <button class="cart-item-remove" onclick="removeFromCart(${product.id})">Hapus</button>
+      </div>
+    `).join("");
+        }
+
+        function toggleCart(open) {
+            document.getElementById("cartDrawer").classList.toggle("open", open);
+            document.getElementById("overlay").classList.toggle("open", open);
+        }
+
+        function checkout() {
+            const entries = getCartEntries();
+            if (entries.length === 0) return;
+
+            let message = "Halo RIO MART, saya mau pesan:%0A";
+            let total = 0;
+            entries.forEach(({ product, qty }) => {
+                const subtotal = product.price * qty;
+                total += subtotal;
+                message += `- ${product.name} x${qty} = ${formatRupiah(subtotal)}%0A`;
+            });
+            message += `%0ATotal: ${formatRupiah(total)}`;
+
+            window.open(`https://wa.me/${WA_NUMBER}?text=${message}`, "_blank");
+        }
+
+        renderCategoryChips();
+        renderProducts();
+        renderCart();
+    </script>
+
+</body>
+
+</html>
