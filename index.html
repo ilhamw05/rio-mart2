@@ -1226,6 +1226,17 @@
             const nama = document.getElementById('cartName').value.trim();
             const alamat = document.getElementById('cartAddress').value.trim();
 
+            if (!nama && !alamat) {
+                alert("Mohon isi Nama Penerima dan Alamat Pengiriman terlebih dahulu sebelum checkout.");
+                return;
+            } else if (!nama) {
+                alert("Mohon isi Nama Penerima terlebih dahulu sebelum checkout.");
+                return;
+            } else if (!alamat) {
+                alert("Mohon isi Alamat Pengiriman terlebih dahulu sebelum checkout.");
+                return;
+            }
+
             let message = "Halo RIO MART, saya mau pesan:%0A";
             let total = 0;
             let hasPriceRange = false;
